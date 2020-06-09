@@ -1,25 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-void mostrarTablero(char tablero[]);
-int Jugada();
-void inicializarTablero(char tablero[]);
-
+#include <windows.h>
 
 char tablero [9];
-int i,ficha_elegida,lugar_ocupado[9],eleccion=1;
+int i,ficha_elegida,lugar_ocupado[9],eleccion=1,victoria_x=0,victoria_o=0,terminar=0;
 
-int main() //programa principal
+int main()
 {
     void inicializarTablero(tablero);
 
-    while(1)
+    while(terminar==0)
     {
-        system("cls");//borra la pantalla
        mostrarTablero(tablero);
-
-       printf("Que ficha quiere jugar?   1-X   2-O\n");
+       elegir_ficha();
+       comprobar_victoria();
+       terminar_el_juego();
+       ganaX();
+       ganaY();
+       empate();
+    }
+    return 0;
+}
+void terminar_el_juego()//al elegir la ficha 3 se termina el juego
+{
+    if(ficha_elegida==3)
+    {
+        terminar=1;
+    }
+}
+int elegir_ficha()
+{
+       printf("Que ficha quiere jugar?   1-X    2-O   3-TERMINAR\n");
        scanf("%d",&ficha_elegida);
+
        if(ficha_elegida==1)
        {
          Jugada();
@@ -30,23 +43,21 @@ int main() //programa principal
          }
 
        }
+
        if(ficha_elegida==2)
        {
          Jugada();
          if(lugar_ocupado[eleccion-1]==0)
          {
            tablero[(eleccion-1)] = 'O';//en la posicion elegida pone una O
-           lugar_ocupado[eleccion-1]=1;
+           lugar_ocupado[eleccion-1]=2;
          }
        }
-    }
 
-
-    return 0;
 }
-//funciones
 void mostrarTablero(char tablero[])//funcion que dibuja el tablero
 {
+    system("cls");
     printf(" %C | %C | %C\n", tablero[0], tablero[1], tablero[2]);
     printf("---|---|---\n");
     printf(" %C | %C | %C\n", tablero[3], tablero[4], tablero[5]);
@@ -55,7 +66,6 @@ void mostrarTablero(char tablero[])//funcion que dibuja el tablero
     printf("\n");
     return;
 }
-
 int Jugada()
 {
     eleccion=0;
@@ -71,7 +81,6 @@ int Jugada()
 
  return eleccion-1;
 }
-
 void inicializarTablero(char tablero[])//llena la matriz del tablero
 {
     for (int i=0; i < 9; i++){
@@ -80,14 +89,98 @@ void inicializarTablero(char tablero[])//llena la matriz del tablero
     }
     return;
 }
-
-int ajustartablero(char tablero[])
+int comprobar_victoria()
 {
-   for(i=0;i<9;i++)
-   {
-       if(tablero[i]== 'X' || tablero[i]== 'O' )
-       {
-
-       }
-   }
+    if(lugar_ocupado[0]==1 && lugar_ocupado[1]==1 && lugar_ocupado[2]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[3]==1 && lugar_ocupado[4]==1 && lugar_ocupado[5]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[6]==1 && lugar_ocupado[7]==1 && lugar_ocupado[8]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[0]==1 && lugar_ocupado[3]==1 && lugar_ocupado[6]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[1]==1 && lugar_ocupado[4]==1 && lugar_ocupado[7]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[2]==1 && lugar_ocupado[5]==1 && lugar_ocupado[8]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[0]==1 && lugar_ocupado[4]==1 && lugar_ocupado[8]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[2]==1 && lugar_ocupado[4]==1 && lugar_ocupado[6]==1 )
+    {
+      victoria_x=1;
+    }
+    //////////////////////////////////////////////////////////////////////////
+      if(lugar_ocupado[0]==2 && lugar_ocupado[1]==2 && lugar_ocupado[2]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[3]==2 && lugar_ocupado[4]==2 && lugar_ocupado[5]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[6]==2 && lugar_ocupado[7]==2 && lugar_ocupado[8]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[0]==2 && lugar_ocupado[3]==2 && lugar_ocupado[6]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[1]==2 && lugar_ocupado[4]==2 && lugar_ocupado[7]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[2]==2 && lugar_ocupado[5]==2 && lugar_ocupado[8]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[0]==2 && lugar_ocupado[4]==2 && lugar_ocupado[8]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[2]==2 && lugar_ocupado[4]==2 && lugar_ocupado[6]==2 )
+    {
+      victoria_o=1;
+    }
+}
+void ganaX()
+{
+    if(victoria_x==1)
+    {
+        mostrarTablero(tablero);
+        printf("ganan las X");
+        terminar=1;
+    }
+}
+void ganaY()
+{
+    if(victoria_o==1)
+    {
+        mostrarTablero(tablero);
+        printf("ganan las Y");
+        terminar=1;
+    }
+}
+void empate()
+{
+    if(tablero[0]!=0 && tablero[1]!=0 && tablero[2]!=0 && tablero[3]!=0 && tablero[4]!=0 && tablero[5]!=0 && tablero[6]!=0 && tablero[7]!=0 && tablero[8]!=0 )
+    {
+        mostrarTablero(tablero);
+        printf("Empate");
+       terminar=1;
+    }
 }
