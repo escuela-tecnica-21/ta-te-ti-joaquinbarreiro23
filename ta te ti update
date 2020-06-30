@@ -1,0 +1,240 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
+
+#define FALSE 0
+#define TRUE 1
+
+char tablero [9];
+int i,ficha_elegida,lugar_ocupado[9],eleccion=1,victoria_x=0,victoria_o=0,terminar=0,contra_quien_jugar,turno_maquina;
+
+
+
+int main()
+{
+
+    printf("1-Jugar 1 vs 1\n2-Jugar contra la maquina\n3-Salir\n");
+    scanf("%d",&contra_quien_jugar);//va a elegir contra quien va a jugar
+    terminar_el_juego();// si el usuario ingresa 3 termina el programa
+    if(contra_quien_jugar==1)
+    {
+        while(terminar==0)
+        {
+        mostrarTablero(tablero);
+        elegir_ficha();
+        comprobar_victoria();
+        ganaX();
+        ganaY();
+        empate();
+        }
+    }
+    if(contra_quien_jugar==2)
+    {
+      while(terminar==0)
+      {
+       mostrarTablero(tablero);
+       elegir_ficha_contra_maquina();
+       jugada_maquina();
+       comprobar_victoria();
+       ganaX();
+       ganaY();
+       empate();
+
+      }
+    }
+
+    return 0;
+}
+
+void elegir_ficha_contra_maquina()
+{
+         Jugada();
+         if(lugar_ocupado[eleccion-1]==0)
+         {
+           tablero[(eleccion-1)] = 'X';//en la posicion elegida pone una X
+           lugar_ocupado[eleccion-1]=1; //ocupa el lugar con un 1
+         }
+}
+void jugada_maquina()//funcion de la jugadas de la maquina
+{
+    turno_maquina=TRUE;
+    if(lugar_ocupado[0]==1 && lugar_ocupado[1]==1 )
+    {
+        tablero[2]='O';
+        lugar_ocupado[2]=2;
+        turno_maquina=FALSE;// para que la maquina no pueda volver a  jugar
+
+    }
+    if(tablero[4]==0 && turno_maquina==TRUE )
+    {
+        tablero[4]='O';
+        lugar_ocupado[4]=2;
+        turno_maquina=FALSE;
+    }
+
+
+}
+//////////////////////////////////////////////////////////////////////////////
+void terminar_el_juego()//al elegir la ficha 3 se termina el juego
+{
+    if(ficha_elegida==3)
+    {
+        terminar=1;
+    }
+}
+int elegir_ficha()
+{
+       printf("Que ficha quiere jugar?   1-X    2-O   3-TERMINAR\n");
+       scanf("%d",&ficha_elegida);
+
+       if(ficha_elegida==1)
+       {
+         Jugada();
+         if(lugar_ocupado[eleccion-1]==0)
+         {
+           tablero[(eleccion-1)] = 'X';//en la posicion elegida pone una X
+           lugar_ocupado[eleccion-1]=1; //ocupa el lugar con un 1
+         }
+
+       }
+
+       if(ficha_elegida==2)
+       {
+         Jugada();
+         if(lugar_ocupado[eleccion-1]==0)
+         {
+           tablero[(eleccion-1)] = 'O';//en la posicion elegida pone una O
+           lugar_ocupado[eleccion-1]=2;
+         }
+       }
+
+}
+void mostrarTablero(char tablero[])//funcion que dibuja el tablero
+{
+    system("cls");
+    printf(" %C | %C | %C\n", tablero[0], tablero[1], tablero[2]);
+    printf("---|---|---\n");
+    printf(" %C | %C | %C\n", tablero[3], tablero[4], tablero[5]);
+    printf("---|---|---\n");
+    printf(" %C | %C | %C\n", tablero[6], tablero[7], tablero[8]);
+    printf("\n");
+    return;
+}
+int Jugada()
+{
+    eleccion=0;
+    while(eleccion<1 || eleccion>9) //sale del while si es correcta la posicion
+    {
+       printf("Elegi un posicion para jugar del 1 al 9\n");
+       scanf("%d",&eleccion);
+       if(eleccion<1 || eleccion>9)
+       {
+           printf("Solo se puede jugar del 1 al 9\n");
+       }
+    }
+
+ return eleccion-1;
+}
+void inicializarTablero(char tablero[])//llena la matriz del tablero
+{
+    for (int i=0; i < 9; i++){
+        tablero[i]=' ';
+        lugar_ocupado[i]=0;
+    }
+    return;
+}
+int comprobar_victoria()
+{
+    if(lugar_ocupado[0]==1 && lugar_ocupado[1]==1 && lugar_ocupado[2]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[3]==1 && lugar_ocupado[4]==1 && lugar_ocupado[5]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[6]==1 && lugar_ocupado[7]==1 && lugar_ocupado[8]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[0]==1 && lugar_ocupado[3]==1 && lugar_ocupado[6]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[1]==1 && lugar_ocupado[4]==1 && lugar_ocupado[7]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[2]==1 && lugar_ocupado[5]==1 && lugar_ocupado[8]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[0]==1 && lugar_ocupado[4]==1 && lugar_ocupado[8]==1 )
+    {
+      victoria_x=1;
+    }
+    if(lugar_ocupado[2]==1 && lugar_ocupado[4]==1 && lugar_ocupado[6]==1 )
+    {
+      victoria_x=1;
+    }
+    //////////////////////////////////////////////////////////////////////////
+      if(lugar_ocupado[0]==2 && lugar_ocupado[1]==2 && lugar_ocupado[2]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[3]==2 && lugar_ocupado[4]==2 && lugar_ocupado[5]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[6]==2 && lugar_ocupado[7]==2 && lugar_ocupado[8]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[0]==2 && lugar_ocupado[3]==2 && lugar_ocupado[6]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[1]==2 && lugar_ocupado[4]==2 && lugar_ocupado[7]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[2]==2 && lugar_ocupado[5]==2 && lugar_ocupado[8]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[0]==2 && lugar_ocupado[4]==2 && lugar_ocupado[8]==2 )
+    {
+      victoria_o=1;
+    }
+    if(lugar_ocupado[2]==2 && lugar_ocupado[4]==2 && lugar_ocupado[6]==2 )
+    {
+      victoria_o=1;
+    }
+}
+void ganaX()
+{
+    if(victoria_x==1)
+    {
+        mostrarTablero(tablero);
+        printf("ganan las X");
+        terminar=1;
+    }
+}
+void ganaY()
+{
+    if(victoria_o==1)
+    {
+        mostrarTablero(tablero);
+        printf("ganan las Y");
+        terminar=1;
+    }
+}
+void empate()
+{
+    if(tablero[0]!=0 && tablero[1]!=0 && tablero[2]!=0 && tablero[3]!=0 && tablero[4]!=0 && tablero[5]!=0 && tablero[6]!=0 && tablero[7]!=0 && tablero[8]!=0 )
+    {
+        mostrarTablero(tablero);
+        printf("Empate");
+       terminar=1;
+    }
+}
