@@ -1,0 +1,36 @@
+object perro {
+	
+	var edad = 5
+	var peso = 0
+	var raza 
+	
+	method CuantosAniosTiene () {
+		
+	return edad	
+		
+	}
+	
+	method PesoDelPerro () {
+		
+		return peso
+	}
+	
+	method razaDelPerro () {
+		
+		return raza
+	}
+	
+	method EsBebe (CantidadDeAnios) {
+	
+	if (edad < 2) {
+		
+	  console.println("El Perro es bebe")
+		
+	}
+	else {
+		
+		console.println("Ya no es un bebe");
+	}
+	
+	}
+}
